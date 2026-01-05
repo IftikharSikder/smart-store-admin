@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:smart_store_admin/features/product/data/controllers/product_controller.dart';
 import 'package:smart_store_admin/features/product/data/services/product_service.dart';
+import 'package:smart_store_admin/features/product/presentation/widgets/product_widgets.dart';
 
 class ProductScreen extends StatefulWidget {
   const ProductScreen({super.key});
@@ -25,19 +26,16 @@ class _ProductScreenState extends State<ProductScreen> {
       body: GetBuilder<ProductController>(
         builder: (productController) {
           final productList = productController.productList;
-          if (productList == null) {
-            return Center(child: CircularProgressIndicator());
-          } else if (productList.isEmpty) {
-            return Center(child: Text("No product found"));
-          } else {
-            return ListView.builder(
-              itemCount: productController.productList!.length,
-              itemBuilder: (context, index) {
-                final products = productController.productList;
-                return ListTile(title: Text(products![index].sId.toString()));
-              },
-            );
-          }
+          return productList == null
+              ? Center(child: CircularProgressIndicator())
+              : productList.isEmpty
+              ? Text("No Product Fount")
+              : ListView.builder(
+                  itemCount: productList.length,
+                  itemBuilder: (context, index) {
+                    return ProductWidgets(product: productList[index]);
+                  },
+                );
         },
       ),
     );
